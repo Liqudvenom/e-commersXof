@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>KURANT — Make digital products impossible to ignore</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #12110f;
+      --paper: #f3f0e7;
+      --lime: #d8ff3e;
+      --orange: #ff4d1a;
+      --muted: #5c574f;
+    }
+    @page { size: 13.333in 7.5in; margin: 0; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #000; }
+    body {
+      color: var(--ink);
+      font-family: Outfit, "Segoe UI", sans-serif;
+      font-size: 15px;
+      line-height: 1.4;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3 { margin: 0; font-weight: 400; }
+    p { margin: 0; }
+    .display, h1, h2 {
+      font-family: "Bebas Neue", "Arial Narrow", Impact, sans-serif;
+      letter-spacing: 0.02em;
+      line-height: 0.86;
+      text-transform: uppercase;
+    }
+    em {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .sheet {
+      width: 13.333in;
+      height: 7.5in;
+      overflow: hidden;
+      position: relative;
+      background: var(--paper);
+      padding: 0.34in 0.46in 0.28in;
+      display: flex;
+      flex-direction: column;
+      break-after: page;
+      page-break-after: always;
+    }
+    .sheet:last-child { break-after: auto; page-break-after: auto; }
+    .sheet--ink { background: var(--ink); color: var(--paper); }
+    .sheet--orange { background: var(--orange); color: var(--ink); }
+    .bar, .foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .logo { font-family: "Bebas Neue", Impact, sans-serif; font-size: 26px; letter-spacing: 0.08em; line-height: 1; }
+    .logo i { display: inline-block; width: 10px; height: 10px; background: var(--lime); margin-right: 8px; vertical-align: 2px; }
+    .bar nav { display: flex; align-items: center; gap: 16px; }
+    .bar nav a, .pager a, .kicker, .foot, .pill {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .cta {
+      background: var(--lime);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 8px 14px;
+    }
+    .kicker { color: var(--muted); display: block; margin-bottom: 8px; }
+    .sheet--ink .kicker { color: var(--lime); }
+    .sheet--orange .kicker { color: var(--ink); }
+    .foot { margin-top: auto; padding-top: 12px; color: var(--muted); }
+    .sheet--ink .foot { color: #c9c3b6; }
+    .sheet--orange .foot { color: rgba(18, 17, 15, 0.72); }
+    .pager { display: flex; align-items: center; gap: 14px; color: inherit; }
+    .pager b { font-weight: 700; }
+    .sheet--ink .pager a { color: var(--paper); }
+    .lede { max-width: 34rem; font-size: 16px; margin-top: 14px; }
+    .note { color: var(--muted); font-size: 13px; max-width: 46rem; }
+    .sheet--ink .note { color: #c9c3b6; }
+
+    .cover { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 28px; flex: 1; min-height: 0; margin-top: 18px; }
+    .cover { min-height: 0; }
+    .cover h1 { font-size: 72px; max-width: 9ch; }
+    .actions { display: flex; gap: 10px; margin-top: 22px; }
+    .actions a { min-height: 44px; display: inline-flex; align-items: center; }
+    .ghost { border: 1px solid var(--ink); border-radius: 999px; padding: 8px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+    .collage { position: relative; min-height: 0; }
+    .collage img { position: absolute; object-fit: cover; }
+    .collage .a { left: 0; top: 0; width: 62%; height: 68%; }
+    .collage .b { right: 0; top: 10%; width: 46%; height: 46%; }
+    .collage .c { left: 18%; bottom: 0; width: 42%; height: 34%; }
+    .chip { position: absolute; left: 10px; bottom: 10px; background: var(--lime); color: var(--ink); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 7px; }
+
+    .index { margin-top: 8px; display: flex; flex-direction: column; gap: 0; flex: 1; }
+    .index a {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 14px;
+      align-items: baseline;
+      padding: 6px 0;
+      border-top: 1px solid rgba(18, 17, 15, 0.16);
+    }
+    .index a strong { font-family: "Bebas Neue", Impact, sans-serif; font-size: 26px; font-weight: 400; letter-spacing: 0.03em; line-height: 0.9; }
+    .index a b { font-family: Outfit, "Segoe UI", sans-serif; font-style: normal; font-weight: 700; font-size: 13px; }
+    .index a span { color: var(--muted); font-size: 13px; }
+    .index a em { font-size: 13px; }
+
+    .services { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 22px; margin-top: 16px; }
+    .services article { display: grid; grid-template-columns: 42px 1fr; gap: 10px; padding-top: 8px; border-top: 1px solid rgba(18, 17, 15, 0.16); }
+    .services b { display: block; font-size: 14px; }
+    .services p { color: var(--muted); font-size: 13px; margin-top: 2px; }
+    .services .no { font-family: "Bebas Neue", Impact, sans-serif; font-size: 28px; line-height: 1; }
+
+    .brands { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 18px; flex: 1; min-height: 0; }
+    .brands a { display: flex; flex-direction: column; min-height: 0; color: var(--paper); background: #1c1b17; }
+    .brands .pic { flex: 1; min-height: 0; position: relative; }
+    .brands figcaption { padding: 12px 12px 14px; }
+    .brands small { display: block; letter-spacing: 0.14em; text-transform: uppercase; font-size: 10px; font-weight: 700; color: var(--lime); }
+    .brands strong { font-family: "Bebas Neue", Impact, sans-serif; font-size: 32px; font-weight: 400; letter-spacing: 0.03em; }
+
+    .case { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: 22px; flex: 1; min-height: 0; margin-top: 12px; }
+    .case h2 { font-size: 84px; }
+    .direction { margin-top: 10px; max-width: 36ch; font-size: 14px; }
+    .direction span { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 4px; }
+    .skus { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .sku { display: grid; grid-template-columns: 64px 1fr auto; gap: 10px; align-items: center; }
+    .sku img { width: 64px; height: 64px; }
+    .sku b { display: block; font-size: 14px; }
+    .sku p { font-size: 12px; color: var(--muted); }
+    .sheet--ink .sku p, .sheet--orange .sku p { color: inherit; opacity: 0.75; }
+    .sku em { font-family: Outfit, "Segoe UI", sans-serif; font-style: normal; font-weight: 700; font-size: 14px; }
+    .frames { display: grid; grid-template-columns: 1.3fr 0.7fr; grid-template-rows: 1fr 0.72fr; gap: 10px; min-height: 0; }
+    .frames .hero { grid-row: 1 / span 2; position: relative; }
+    .frames figure { position: relative; overflow: hidden; min-height: 0; }
+    .tag { position: absolute; left: 10px; top: 10px; background: var(--ink); color: var(--paper); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 7px; }
+    .sheet--ink .tag { background: var(--lime); color: var(--ink); }
+    .sheet--orange .tag { background: var(--ink); color: var(--paper); }
+
+    .studies { display: grid; grid-template-rows: 1fr 1fr; gap: 12px; margin-top: 10px; flex: 1; min-height: 0; }
+    .study { min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+    .study h3 { font-family: "Bebas Neue", Impact, sans-serif; font-size: 22px; letter-spacing: 0.03em; text-transform: uppercase; line-height: 0.9; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; flex: 1; min-height: 0; }
+    .panel { position: relative; overflow: hidden; background: #fff; color: var(--ink); display: grid; grid-template-columns: 0.72fr 1.28fr; min-height: 0; }
+    .panel.photo, .panel.ad { grid-template-columns: 1fr; }
+    .panel > img { min-height: 0; height: 100%; }
+    .panel .copy { padding: 12px 14px; }
+    .panel h3 { font-size: 28px; }
+    .price { font-family: "Bebas Neue", Impact, sans-serif; font-size: 28px; line-height: 1; margin: 4px 0; }
+    .limebtn { display: inline-block; background: var(--lime); color: var(--ink); border-radius: 999px; padding: 6px 10px; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+    .dull { display: inline-block; background: #ded9d0; color: #5c574f; padding: 4px 8px; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 0; text-transform: none; }
+    .basic { background: #f7f7f7; font-family: Arial, sans-serif; }
+    .basic h3 { font-family: Arial, sans-serif; font-size: 16px; text-transform: none; letter-spacing: 0; }
+    .side { position: absolute; right: 8px; top: 8px; background: var(--ink); color: var(--paper); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 6px; }
+    .caption { position: absolute; left: 12px; bottom: 12px; color: white; }
+    .caption h3 { font-size: 42px; }
+
+    .tiles { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 10px; flex: 1; min-height: 0; margin-top: 14px; }
+    .tiles a { position: relative; overflow: hidden; color: white; min-height: 0; }
+    .tiles span { position: absolute; left: 12px; right: 12px; bottom: 12px; }
+    .tiles strong { font-family: "Bebas Neue", Impact, sans-serif; font-size: 36px; font-weight: 400; letter-spacing: 0.03em; display: block; line-height: 0.9; }
+    .tiles small { display: block; margin-top: 4px; font-size: 12px; max-width: 28ch; }
+
+    .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+    .steps article { background: #fff; padding: 18px 18px 20px; min-height: 1.7in; }
+    .steps .no { font-family: "Bebas Neue", Impact, sans-serif; font-size: 42px; line-height: 0.8; display: block; }
+    .steps h3 { font-family: "Bebas Neue", Impact, sans-serif; font-size: 32px; letter-spacing: 0.03em; text-transform: uppercase; margin: 8px 0; line-height: 0.9; }
+    .steps p { max-width: 36ch; color: var(--muted); }
+
+    .contact { display: flex; flex-direction: column; justify-content: flex-end; flex: 1; margin-top: 18px; padding-bottom: 8px; }
+    .contact h2 { font-size: 86px; max-width: 14ch; }
+    .mail {
+      display: inline-block;
+      margin-top: 18px;
+      background: var(--lime);
+      color: var(--ink);
+      font-size: 22px;
+      font-weight: 700;
+      padding: 14px 18px;
+    }
+    .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .fields label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+    .fields .full { grid-column: 1 / -1; }
+    .fake {
+      margin-top: 6px;
+      border: 1px solid rgba(243, 240, 231, 0.35);
+      min-height: 42px;
+      color: #c9c3b6;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+      font-size: 14px;
+      padding: 10px 12px;
+    }
+    .fake.tall { min-height: 72px; }
+  </style>
+</head>
+<body>
+  <section class="sheet" id="cover">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#expertise">Expertise</a>
+        <a href="#work">Work</a>
+        <a href="#studies">Studies</a>
+        <a href="#motion">Motion</a>
+        <a href="#process">Process</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <div class="cover">
+      <div>
+        <p class="kicker">Independent e-commerce specialist</p>
+        <h1>Make digital products impossible to ignore.</h1>
+        <p class="lede">Creative e-commerce solutions, product presentation and digital experiences designed to attract attention and turn visitors into customers.</p>
+        <div class="actions">
+          <a class="cta" href="#work">Explore my work</a>
+          <a class="ghost" href="#contact">Let's build something</a>
+        </div>
+      </div>
+      <div class="collage">
+        <img class="a" src="../assets/lunen-serum.jpg" alt="Unlabeled amber dropper bottle in hard sunlight">
+        <img class="b" src="../assets/volt-campaign.jpg" alt="Black headphones photographed on a yellow field">
+        <img class="c" src="../assets/kilo-runner.jpg" alt="Chunky multicolour sneakers styled on white blocks">
+      </div>
+    </div>
+    <footer class="foot">
+      <span>Concept campaigns · Lunen · Voltline · Kilo District · Fieldpost · Northroom</span>
+      <span class="pager"><b>01</b><a href="#contents">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet" id="contents">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#expertise">Expertise</a>
+        <a href="#work">Work</a>
+        <a href="#studies">Studies</a>
+        <a href="#motion">Motion</a>
+        <a href="#process">Process</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <p class="kicker" style="margin-top:16px">Contents</p>
+    <h2 style="font-size:64px">Click a line. Open the page.</h2>
+    <nav class="index" aria-label="Contents">
+      <a href="#cover"><b>01</b><strong>Cover</strong><span>The offer, in one line</span></a>
+      <a href="#expertise"><b>03</b><strong>Expertise</strong><span>Eight moves between the product and the purchase</span></a>
+      <a href="#work"><b>04</b><strong>Concept campaigns</strong><span>Five fictional brands</span></a>
+      <a href="#lunen"><b>05</b><strong>Lunen</strong><span>Premium skincare</span></a>
+      <a href="#voltline"><b>06</b><strong>Voltline</strong><span>Tech accessories</span></a>
+      <a href="#kilo"><b>07</b><strong>Kilo District</strong><span>Streetwear launch</span></a>
+      <a href="#fieldpost"><b>08</b><strong>Fieldpost</strong><span>Organic food and lifestyle</span></a>
+      <a href="#northroom"><b>09</b><strong>Northroom</strong><span>Home and interior</span></a>
+      <a href="#studies"><b>10</b><strong>Studies</strong><span>Same picture, different selling</span></a>
+      <a href="#motion"><b>12</b><strong>Motion</strong><span>Stills from the interactive site</span></a>
+      <a href="#process"><b>13</b><strong>Process</strong><span>Four moves, in order</span></a>
+      <a href="#contact"><b>14</b><strong>Contact</strong><span>smakocet@gmail.com</span></a>
+    </nav>
+    <footer class="foot">
+      <span>Names, prices, and offers are example merchandising. Not clients.</span>
+      <span class="pager"><a href="#cover">Back</a><b>02</b><a href="#expertise">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet" id="expertise">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#expertise">Expertise</a>
+        <a href="#work">Work</a>
+        <a href="#studies">Studies</a>
+        <a href="#motion">Motion</a>
+        <a href="#process">Process</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <p class="kicker" style="margin-top:18px">02 — E-commerce expertise</p>
+    <h2 style="font-size:58px;max-width:16ch">Everything between the product and the purchase.</h2>
+    <div class="services">
+      <article><span class="no">01</span><div><b>E-commerce Store Setup &amp; Optimisation</b><p>Structure, navigation, and a homepage that puts the product first.</p></div></article>
+      <article><span class="no">02</span><div><b>Product Listing Creation</b><p>Thumbnails, titles, and prices composed to earn the click.</p></div></article>
+      <article><span class="no">03</span><div><b>Product Page Design</b><p>Galleries and buy columns that keep the offer in frame.</p></div></article>
+      <article><span class="no">04</span><div><b>Conversion Rate Optimisation (CRO)</b><p>Hierarchy and friction rebuilt around how people decide.</p></div></article>
+      <article><span class="no">05</span><div><b>Product Photography &amp; Visual Presentation</b><p>Light, crop, and order — so the product looks worth owning.</p></div></article>
+      <article><span class="no">06</span><div><b>Promotional Graphics &amp; Advertising Creatives</b><p>One campaign thought, cut for the banner, the square, and the story.</p></div></article>
+      <article><span class="no">07</span><div><b>TikTok Shop &amp; Social Commerce</b><p>Vertical product stories built for the shop tab.</p></div></article>
+      <article><span class="no">08</span><div><b>E-commerce Content &amp; Product Descriptions</b><p>The material, the use, and the difference, said plainly.</p></div></article>
+    </div>
+    <footer class="foot">
+      <span>On the website these open as interactive scenes. Here they read as the offer.</span>
+      <span class="pager"><a href="#contents">Back</a><b>03</b><a href="#work">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet sheet--ink" id="work">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#expertise">Expertise</a>
+        <a href="#work">Work</a>
+        <a href="#studies">Studies</a>
+        <a href="#motion">Motion</a>
+        <a href="#process">Process</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <p class="kicker" style="margin-top:16px">03 — Concept campaigns</p>
+    <h2 style="font-size:58px">Fictional brands. Real merchandising.</h2>
+    <p class="note" style="margin-top:8px">Every brand is a concept project, made to show creative direction. They are not clients, and no sales results are claimed.</p>
+    <nav class="brands" aria-label="Concept projects">
+      <a href="#lunen"><div class="pic"><img src="../assets/lunen-serum.jpg" alt="Lunen Dew Serum"></div><figcaption><small>01 · Skincare</small><strong>Lunen</strong></figcaption></a>
+      <a href="#voltline"><div class="pic"><img src="../assets/volt-campaign.jpg" alt="Voltline headphones"></div><figcaption><small>02 · Tech</small><strong>Voltline</strong></figcaption></a>
+      <a href="#kilo"><div class="pic"><img src="../assets/kilo-editorial.jpg" alt="Kilo District editorial"></div><figcaption><small>03 · Streetwear</small><strong>Kilo</strong></figcaption></a>
+      <a href="#fieldpost"><div class="pic"><img src="../assets/field-fruit.jpg" alt="Fieldpost citrus"></div><figcaption><small>04 · Food</small><strong>Fieldpost</strong></figcaption></a>
+      <a href="#northroom"><div class="pic"><img src="../assets/north-chair.jpg" alt="Northroom lounge chair"></div><figcaption><small>05 · Home</small><strong>Northroom</strong></figcaption></a>
+    </nav>
+    <footer class="foot">
+      <span>Prices are example merchandising for these concepts.</span>
+      <span class="pager"><a href="#expertise">Back</a><b>04</b><a href="#lunen">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet" id="lunen">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#work">All work</a>
+        <a href="#voltline">Next brand</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <div class="case">
+      <div>
+        <p class="kicker">Concept project · 01 · Premium skincare</p>
+        <h2>Lunen</h2>
+        <p class="direction"><span>Creative direction</span> Glass, water-light, and a near-clinical calm. The bottle is treated like a jewel, the page like a quiet counter.</p>
+        <div class="skus">
+          <div class="sku"><img src="../assets/lunen-serum.jpg" alt=""><div><b>Dew Serum</b><p>A light concentrate for dull mornings.</p></div><em>€48</em></div>
+          <div class="sku"><img src="../assets/lunen-bottle.jpg" alt=""><div><b>Soft Cream</b><p>Slower than a scroll. Evening only.</p></div><em>€52</em></div>
+          <div class="sku"><img src="../assets/lunen-bottle.jpg" alt="" style="object-position:18% 40%"><div><b>Glass Mist</b><p>Water, a clean finish, nothing sticky.</p></div><em>€32</em></div>
+        </div>
+      </div>
+      <div class="frames">
+        <figure class="hero"><img src="../assets/lunen-serum.jpg" alt="Product hero: amber dropper bottle of the fictional Lunen Dew Serum"><span class="tag">Product hero</span></figure>
+        <figure><img src="../assets/lunen-bottle.jpg" alt="Unlabeled bottles and tubes arranged on blush pink"><span class="tag">Promo</span></figure>
+        <figure><img src="../assets/lunen-portrait.jpg" alt="Beauty portrait used as a Lunen campaign banner"><span class="tag">Banner</span></figure>
+      </div>
+    </div>
+    <footer class="foot">
+      <span>Fictional brand. Example prices. Nothing here is for sale.</span>
+      <span class="pager"><a href="#work">Back</a><b>05</b><a href="#voltline">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet sheet--ink" id="voltline">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#work">All work</a>
+        <a href="#kilo">Next brand</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <div class="case">
+      <div>
+        <p class="kicker">Concept project · 02 · Tech accessories</p>
+        <h2>Voltline</h2>
+        <p class="direction"><span>Creative direction</span> Matte hardware on black, lime used like a status light. The product should read as an instrument.</p>
+        <div class="skus">
+          <div class="sku"><img src="../assets/volt-packshot.jpg" alt=""><div><b>Arc Headphones</b><p>Matte black. Built for long listening.</p></div><em>€189</em></div>
+          <div class="sku"><img src="../assets/volt-packshot.jpg" alt="" style="object-position:70% center"><div><b>Earcup detail</b><p>Same product. A second tile for the material.</p></div><em>€189</em></div>
+          <div class="sku"><img src="../assets/volt-campaign.jpg" alt=""><div><b>Yellow cut</b><p>Campaign crop of the same headphones.</p></div><em>1:1</em></div>
+        </div>
+      </div>
+      <div class="frames">
+        <figure class="hero"><img src="../assets/volt-campaign.jpg" alt="Yellow campaign frame for Arc Headphones"><span class="tag">Campaign</span></figure>
+        <figure><img src="../assets/volt-packshot.jpg" alt="Studio packshot of black over-ear headphones"><span class="tag">Packshot</span></figure>
+        <figure><img src="../assets/volt-campaign.jpg" alt="" style="object-position:80% center"><span class="tag">Crop</span></figure>
+      </div>
+    </div>
+    <footer class="foot">
+      <span>Fictional brand. Example prices. Nothing here is for sale.</span>
+      <span class="pager"><a href="#lunen">Back</a><b>06</b><a href="#kilo">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet sheet--orange" id="kilo">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#work">All work</a>
+        <a href="#fieldpost">Next brand</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <div class="case">
+      <div>
+        <p class="kicker">Concept project · 03 · Streetwear launch</p>
+        <h2>Kilo District</h2>
+        <p class="direction"><span>Creative direction</span> A night drop. Oversized type, a hard orange cut, photography treated as a poster.</p>
+        <div class="skus">
+          <div class="sku"><img src="../assets/kilo-tee.jpg" alt=""><div><b>Sun Set</b><p>Cropped fleece, cut for hard light.</p></div><em>€120</em></div>
+          <div class="sku"><img src="../assets/kilo-street.jpg" alt=""><div><b>Shell Jacket</b><p>Black shell. Yellow where it opens.</p></div><em>€160</em></div>
+          <div class="sku"><img src="../assets/kilo-runner.jpg" alt=""><div><b>Runner 09</b><p>A heavy sole. Colour doing the logo’s job.</p></div><em>€140</em></div>
+        </div>
+      </div>
+      <div class="frames">
+        <figure class="hero"><img src="../assets/kilo-editorial.jpg" alt="Editorial portrait in a yellow tracksuit"><span class="tag">Poster</span></figure>
+        <figure><img src="../assets/kilo-runner.jpg" alt="Runner 09 sneakers"><span class="tag">Product</span></figure>
+        <figure><img src="../assets/kilo-street.jpg" alt="Street editorial in a black and yellow shell jacket"><span class="tag">Night</span></figure>
+      </div>
+    </div>
+    <footer class="foot">
+      <span>Fictional brand. Example prices. Nothing here is for sale.</span>
+      <span class="pager"><a href="#voltline">Back</a><b>07</b><a href="#fieldpost">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet" id="fieldpost">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#work">All work</a>
+        <a href="#northroom">Next brand</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <div class="case">
+      <div>
+        <p class="kicker">Concept project · 04 · Organic food &amp; lifestyle</p>
+        <h2>Fieldpost</h2>
+        <p class="direction"><span>Creative direction</span> Market-stall abundance and quiet labels. The food leads; the design stays out of the way.</p>
+        <div class="skus">
+          <div class="sku"><img src="../assets/field-oil.jpg" alt=""><div><b>Cold Press</b><p>Peppery, green, early harvest.</p></div><em>€24</em></div>
+          <div class="sku"><img src="../assets/field-honey.jpg" alt=""><div><b>Citrus Honey</b><p>A bright jar. A slow pour.</p></div><em>€16</em></div>
+          <div class="sku"><img src="../assets/field-fruit.jpg" alt=""><div><b>Citrus Crate</b><p>Fruit, cut open, no packaging in the way.</p></div><em>€18</em></div>
+        </div>
+      </div>
+      <div class="frames">
+        <figure class="hero"><img src="../assets/field-honey.jpg" alt="Citrus honey pour"><span class="tag">The pour</span></figure>
+        <figure><img src="../assets/field-oil.jpg" alt="Glass cruet of olive oil"><span class="tag">Pantry</span></figure>
+        <figure><img src="../assets/field-bowl.jpg" alt="A weekday bowl of produce"><span class="tag">Market</span></figure>
+      </div>
+    </div>
+    <footer class="foot">
+      <span>Fictional brand. Example prices. Nothing here is for sale.</span>
+      <span class="pager"><a href="#kilo">Back</a><b>08</b><a href="#northroom">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet" id="northroom">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#work">All work</a>
+        <a href="#studies">Studies</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <div class="case">
+      <div>
+        <p class="kicker">Concept project · 05 · Home &amp; interior</p>
+        <h2>Northroom</h2>
+        <p class="direction"><span>Creative direction</span> Architectural stillness. Objects framed like sculpture, type like a museum label.</p>
+        <div class="skus">
+          <div class="sku"><img src="../assets/north-clay.jpg" alt=""><div><b>Clay Vessel</b><p>Speckled stoneware. A low glaze line.</p></div><em>€68</em></div>
+          <div class="sku"><img src="../assets/north-lamp.jpg" alt=""><div><b>Arc Lamp</b><p>A metal shade. A thin arm.</p></div><em>€240</em></div>
+          <div class="sku"><img src="../assets/north-chair.jpg" alt=""><div><b>Lounge Chair</b><p>A low seat in gallery yellow.</p></div><em>€980</em></div>
+        </div>
+      </div>
+      <div class="frames">
+        <figure class="hero"><img src="../assets/north-interior.jpg" alt="A calm living room"><span class="tag">The room</span></figure>
+        <figure><img src="../assets/north-clay.jpg" alt="Speckled clay vessels"><span class="tag">Object</span></figure>
+        <figure><img src="../assets/north-chair.jpg" alt="Yellow lounge chair"><span class="tag">Seating</span></figure>
+      </div>
+    </div>
+    <footer class="foot">
+      <span>Fictional brand. Example prices. Nothing here is for sale.</span>
+      <span class="pager"><a href="#fieldpost">Back</a><b>09</b><a href="#studies">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet" id="studies">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#expertise">Expertise</a>
+        <a href="#work">Work</a>
+        <a href="#studies">Studies</a>
+        <a href="#motion">Motion</a>
+        <a href="#process">Process</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <p class="kicker" style="margin-top:12px">04 — Before &amp; after</p>
+    <h2 style="font-size:46px">Same picture. Different selling.</h2>
+    <div class="studies">
+      <article class="study">
+        <h3>Listing · basic / optimised</h3>
+        <div class="pair">
+          <div class="panel basic">
+            <img src="../assets/volt-packshot.jpg" alt="">
+            <div class="copy"><h3>Black headphones</h3><p class="price">€189</p><span class="dull">Buy</span></div>
+            <span class="side">Basic</span>
+          </div>
+          <div class="panel">
+            <img src="../assets/volt-packshot.jpg" alt="">
+            <div class="copy"><p class="kicker">Tech · Concept</p><h3>Arc Headphones</h3><p>Matte black. Built for long listening.</p><p class="price">€189</p><span class="limebtn">Add to bag</span></div>
+            <span class="side">Optimised</span>
+          </div>
+        </div>
+      </article>
+      <article class="study">
+        <h3>Photography · ordinary crop / campaign crop</h3>
+        <div class="pair">
+          <div class="panel photo">
+            <img src="../assets/volt-campaign.jpg" alt="" style="object-position:center top">
+            <span class="side">Ordinary · DSC_2041.JPG</span>
+          </div>
+          <div class="panel photo">
+            <img src="../assets/volt-campaign.jpg" alt="">
+            <div class="caption"><p class="kicker" style="color:var(--lime)">Campaign crop</p><h3>The yellow cut.</h3></div>
+            <span class="side">Campaign</span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <footer class="foot">
+      <span>Design studies, not performance results. On the site, drag the divider.</span>
+      <span class="pager"><a href="#northroom">Back</a><b>10</b><a href="#studies-2">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet" id="studies-2">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#expertise">Expertise</a>
+        <a href="#work">Work</a>
+        <a href="#studies">Studies</a>
+        <a href="#motion">Motion</a>
+        <a href="#process">Process</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <p class="kicker" style="margin-top:12px">04 — Before &amp; after</p>
+    <h2 style="font-size:46px">The offer, kept in frame.</h2>
+    <div class="studies">
+      <article class="study">
+        <h3>Product page · generic / conversion layout</h3>
+        <div class="pair">
+          <div class="panel basic">
+            <img src="../assets/volt-packshot.jpg" alt="">
+            <div class="copy"><h3>Headphones</h3><p>€189 <span class="dull">Buy</span></p><p style="font-size:11px;margin-top:6px">black headphones for music and calls and everyday use high quality sound comfortable fit buy now fast shipping…</p></div>
+            <span class="side">Generic</span>
+          </div>
+          <div class="panel">
+            <img src="../assets/volt-packshot.jpg" alt="">
+            <div class="copy"><p class="kicker">Over-ear</p><h3>Arc Headphones</h3><p class="price">€189</p><p>Matte shell. A headband that gives.</p><span class="limebtn">Add to bag</span></div>
+            <span class="side">Focused</span>
+          </div>
+        </div>
+      </article>
+      <article class="study">
+        <h3>Advertising · weak banner / campaign frame</h3>
+        <div class="pair">
+          <div class="panel ad">
+            <img src="../assets/kilo-editorial.jpg" alt="" style="opacity:0.45">
+            <div class="caption" style="color:var(--ink)"><h3 style="font-family:Arial,sans-serif;font-size:28px;letter-spacing:0">SALE</h3><p>All items reduced</p></div>
+            <span class="side">Weak</span>
+          </div>
+          <div class="panel ad">
+            <img src="../assets/kilo-editorial.jpg" alt="">
+            <div class="caption"><p class="kicker" style="color:var(--lime)">Concept creative</p><h3>Wear the light.</h3><p>Sun Set — a frame, not a discount sticker.</p></div>
+            <span class="side">Campaign</span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <footer class="foot">
+      <span>Design studies, not performance results.</span>
+      <span class="pager"><a href="#studies">Back</a><b>11</b><a href="#motion">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet sheet--ink" id="motion">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#expertise">Expertise</a>
+        <a href="#work">Work</a>
+        <a href="#studies">Studies</a>
+        <a href="#motion">Motion</a>
+        <a href="#process">Process</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <p class="kicker" style="margin-top:14px">05 — Motion &amp; interactive</p>
+    <h2 style="font-size:58px">A store should feel alive.</h2>
+    <nav class="tiles" aria-label="Campaign stills">
+      <a href="#lunen"><img src="../assets/lunen-serum.jpg" alt="Lunen serum"><span><strong>Lunen</strong><small>Glass, dew, and hard light. The bottle is the whole advertisement.</small></span></a>
+      <a href="#voltline"><img src="../assets/volt-campaign.jpg" alt="Voltline"><span><strong>Voltline</strong><small>Yellow does the shouting. Black does the spec.</small></span></a>
+      <a href="#kilo"><img src="../assets/kilo-editorial.jpg" alt="Kilo District"><span><strong>Kilo</strong><small>Shot like a poster, not a catalogue tile.</small></span></a>
+      <a href="#fieldpost"><img src="../assets/field-oil.jpg" alt="Fieldpost"><span><strong>Fieldpost</strong><small>The ingredient is the hero.</small></span></a>
+      <a href="#northroom"><img src="../assets/north-chair.jpg" alt="Northroom"><span><strong>Northroom</strong><small>The empty space is part of the price.</small></span></a>
+    </nav>
+    <footer class="foot">
+      <span>Make it desirable · make it clear · make it shoppable · concept work only</span>
+      <span class="pager"><a href="#studies-2">Back</a><b>12</b><a href="#process">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet" id="process">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#expertise">Expertise</a>
+        <a href="#work">Work</a>
+        <a href="#studies">Studies</a>
+        <a href="#motion">Motion</a>
+        <a href="#process">Process</a>
+        <a class="cta" href="#contact">Let's build something</a>
+      </nav>
+    </header>
+    <p class="kicker" style="margin-top:18px">06 — How I work</p>
+    <h2 style="font-size:64px">Four moves, in order.</h2>
+    <div class="steps">
+      <article><span class="no">01</span><h3>Research the Product</h3><p>Who it is for, what it replaces, and the detail a shopper actually uses to decide.</p></article>
+      <article><span class="no">02</span><h3>Develop the Creative Direction</h3><p>A point of view: type, crop, colour, and the line the campaign is willing to repeat.</p></article>
+      <article><span class="no">03</span><h3>Build the E-commerce Experience</h3><p>Store structure, listings, and product pages composed so the product stays understandable.</p></article>
+      <article><span class="no">04</span><h3>Optimise for Sales</h3><p>Hierarchy, friction, and the path to purchase, revised once the thing is actually live.</p></article>
+    </div>
+    <footer class="foot">
+      <span>Optimisation means the structure and the presentation. What it earns depends on the product, the offer, and the traffic.</span>
+      <span class="pager"><a href="#motion">Back</a><b>13</b><a href="#contact">Next</a></span>
+    </footer>
+  </section>
+
+  <section class="sheet sheet--ink" id="contact">
+    <header class="bar">
+      <a class="logo" href="#cover"><i></i>Kurant</a>
+      <nav>
+        <a href="#expertise">Expertise</a>
+        <a href="#work">Work</a>
+        <a href="#studies">Studies</a>
+        <a href="#motion">Motion</a>
+        <a href="#process">Process</a>
+        <a class="cta" href="mailto:smakocet@gmail.com">Let's build something</a>
+      </nav>
+    </header>
+    <div class="contact">
+      <div>
+        <p class="kicker">07 — Contact</p>
+        <h2>Your product deserves <em>better presentation.</em></h2>
+        <p class="lede">Let's turn your products into experiences people want to explore and buy.</p>
+        <a class="mail" href="mailto:smakocet@gmail.com">smakocet@gmail.com</a>
+      </div>
+    </div>
+    <footer class="foot">
+      <span>The live site sends the form by email. In this PDF, the address is the link.</span>
+      <span class="pager"><a href="#process">Back</a><b>14</b><a href="#cover">Cover</a></span>
+    </footer>
+  </section>
+</body>
+</html>
