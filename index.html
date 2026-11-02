@@ -24,6 +24,7 @@
       <a href="#work">Work</a>
       <a href="#compare">Studies</a>
       <a href="#motion">Motion</a>
+      <a href="#studio">3D</a>
       <a href="#process">Process</a>
       <a class="btn btn--lime" href="#contact">Let's build something <span class="arrow" aria-hidden="true">→</span></a>
     </nav>
@@ -256,7 +257,10 @@
           <div class="banner__copy">
             <h3>Skin, considered.</h3>
             <p>A face, then a bottle. The order is the idea.</p>
-            <button class="btn btn--lime" type="button" data-concept>Shop the ritual</button>
+            <div class="banner__actions">
+              <button class="btn btn--lime" type="button" data-concept>Shop the ritual</button>
+              <a class="link-3d" href="#studio" data-studio="bottle">Preview in 3D</a>
+            </div>
           </div>
         </aside>
         <div class="case__split">
@@ -342,7 +346,10 @@
           <div class="banner__copy">
             <h3>Hear the object.</h3>
             <p>Arc Headphones — one product, a field of yellow, nothing else invited.</p>
-            <button class="btn btn--lime" type="button" data-concept>View the edit</button>
+            <div class="banner__actions">
+              <button class="btn btn--lime" type="button" data-concept>View the edit</button>
+              <a class="link-3d" href="#studio" data-studio="arc">Preview in 3D</a>
+            </div>
           </div>
         </aside>
         <div class="case__split">
@@ -602,7 +609,10 @@
           <div class="banner__copy">
             <h3>Live with less, better.</h3>
             <p>The room is the campaign. The object is the product.</p>
-            <button class="btn btn--lime" type="button" data-concept>View the room</button>
+            <div class="banner__actions">
+              <button class="btn btn--lime" type="button" data-concept>View the room</button>
+              <a class="link-3d" href="#studio" data-studio="vessel">Preview in 3D</a>
+            </div>
           </div>
         </aside>
         <div class="case__split">
@@ -821,9 +831,65 @@
       <p class="cycle-line">Make it <span id="cycle">unmissable</span></p>
     </section>
 
+    <section class="sec studio" id="studio">
+      <header class="sec-head">
+        <span class="kicker">06 — 3D preview</span>
+        <h2>Turn it. Recolour it.</h2>
+      </header>
+      <p class="lede studio__lede">Drag to rotate. Pick a colour and a finish, and the object takes that surface.</p>
+      <div class="studio__layout">
+        <div class="studio__stage" id="studio-stage" tabindex="0" role="application" aria-label="3D product preview. Drag, or use the arrow keys, to rotate.">
+          <canvas id="studio-canvas"></canvas>
+          <p class="studio__hint">Drag to rotate</p>
+          <p class="studio__fallback" id="studio-fallback" hidden>The 3D viewer could not start. Check the connection and try again.</p>
+        </div>
+        <div class="studio__panel">
+          <p class="label" id="studio-product-label">Product</p>
+          <div class="studio__products" role="tablist" aria-labelledby="studio-product-label">
+            <button type="button" role="tab" data-product="bottles" aria-selected="true">Bottles</button>
+            <button type="button" role="tab" data-product="skincare" aria-selected="false">Skincare</button>
+            <button type="button" role="tab" data-product="thermos" aria-selected="false">Thermos</button>
+            <button type="button" role="tab" data-product="camera" aria-selected="false">Camera</button>
+            <button type="button" role="tab" data-product="phone" aria-selected="false">Phone</button>
+            <button type="button" role="tab" data-product="laptop" aria-selected="false">Laptop</button>
+            <button type="button" role="tab" data-product="gamepad" aria-selected="false">Gamepad</button>
+            <button type="button" role="tab" data-product="controller" aria-selected="false">Controller</button>
+            <button type="button" role="tab" data-product="motorcycle" aria-selected="false">Motorcycle</button>
+            <button type="button" role="tab" data-product="bottle" aria-selected="false">Lunen bottle</button>
+            <button type="button" role="tab" data-product="arc" aria-selected="false">Voltline Arc</button>
+            <button type="button" role="tab" data-product="vessel" aria-selected="false">Northroom vessel</button>
+          </div>
+          <p class="label" id="studio-colour-label">Colour</p>
+          <div class="swatches" role="group" aria-labelledby="studio-colour-label">
+            <button type="button" class="swatch" data-color="#c9863a" aria-label="Amber" style="--c:#c9863a"></button>
+            <button type="button" class="swatch" data-color="#d8ff3e" aria-label="Lime" style="--c:#d8ff3e"></button>
+            <button type="button" class="swatch" data-color="#171717" aria-label="Black" style="--c:#171717"></button>
+            <button type="button" class="swatch" data-color="#ff4d1a" aria-label="Orange" style="--c:#ff4d1a"></button>
+            <button type="button" class="swatch is-on" data-color="#f3efe4" aria-label="Cream" style="--c:#f3efe4"></button>
+            <button type="button" class="swatch" data-color="#e7b7a8" aria-label="Blush" style="--c:#e7b7a8"></button>
+            <button type="button" class="swatch" data-color="#b9bcc4" aria-label="Silver" style="--c:#b9bcc4"></button>
+            <button type="button" class="swatch" data-color="#a56a45" aria-label="Clay" style="--c:#a56a45"></button>
+            <label class="swatch swatch--custom" title="Custom colour">
+              <span class="sr-only">Custom colour</span>
+              <input type="color" id="studio-color" value="#f3efe4" aria-label="Custom colour">
+            </label>
+          </div>
+          <p class="label" id="studio-finish-label">Material</p>
+          <div class="finishes" role="group" aria-labelledby="studio-finish-label">
+            <button type="button" data-finish="matte" aria-pressed="false">Matte</button>
+            <button type="button" data-finish="gloss" aria-pressed="true">Gloss</button>
+            <button type="button" data-finish="metal" aria-pressed="false">Metal</button>
+            <button type="button" data-finish="glass" aria-pressed="false">Glass</button>
+          </div>
+          <p class="studio__readout" id="studio-readout">Bottles · Gloss · Cream</p>
+          <p class="note">The colour replaces the printed surface, so you can judge a finish of your own. Concept preview only. Nothing here is for sale.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="sec process" id="process">
       <header class="sec-head">
-        <span class="kicker">06 — How I work</span>
+        <span class="kicker">07 — How I work</span>
         <h2>Four moves, in order.</h2>
       </header>
       <div class="steps">
@@ -855,7 +921,7 @@
       <p class="watermark" aria-hidden="true">Kurant</p>
       <div class="contact__grid">
         <div>
-          <p class="kicker">07 — Contact</p>
+          <p class="kicker">08 — Contact</p>
           <h2>Your product deserves <em>better presentation.</em></h2>
           <p class="lede">Let's turn your products into experiences people want to explore and buy.</p>
         </div>
@@ -885,6 +951,15 @@
     <p>Photographs live in the assets folder and can be replaced. Prices are example merchandising for those concepts.</p>
   </footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
   <script src="js/main.js"></script>
+  <script type="module" src="js/studio.js?v=7"></script>
 </body>
 </html>
