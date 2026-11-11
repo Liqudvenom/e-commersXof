@@ -7,11 +7,26 @@
   const toggle = document.querySelector(".nav-toggle");
   const nav = document.querySelector(".nav");
 
+  const hero = document.querySelector(".kh");
+  let lastY = window.scrollY;
   function onScroll() {
+    const y = window.scrollY;
     const max = document.documentElement.scrollHeight - window.innerHeight;
-    const p = max > 0 ? window.scrollY / max : 0;
+    const p = max > 0 ? y / max : 0;
     if (progress) progress.style.transform = "scaleX(" + p + ")";
-    if (header) header.classList.toggle("is-stuck", window.scrollY > 10);
+    if (header) {
+      const overHero = hero ? y < hero.offsetHeight - header.offsetHeight : false;
+      header.classList.toggle("is-over-hero", overHero);
+      document.body.classList.toggle("at-hero", overHero);
+      header.classList.toggle("is-stuck", !overHero && y > 10);
+      const navOpen = document.body.classList.contains("nav-open");
+      const hide = !navOpen && !overHero && y > lastY + 2 && y > 400;
+      const show = y < lastY - 2 || overHero || navOpen;
+      if (hide) header.classList.add("is-hidden");
+      else if (show) header.classList.remove("is-hidden");
+      document.body.classList.toggle("header-hidden", header.classList.contains("is-hidden"));
+    }
+    lastY = y;
   }
 
   let ticking = false;
@@ -30,6 +45,10 @@
     document.body.classList.toggle("nav-open", open);
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
     toggle.textContent = open ? "Close" : "Menu";
+    if (window.kurantLenis) {
+      if (open) window.kurantLenis.stop();
+      else window.kurantLenis.start();
+    }
   }
 
   if (toggle && nav) {
@@ -64,7 +83,7 @@
       scenes.forEach(function (scene) {
         scene.classList.toggle("is-on", scene.getAttribute("data-scene") === id);
       });
-      if (window.matchMedia("(max-width: 900px)").matches) {
+      if (window.matchMedia("(max-width: 980px)").matches) {
         const stage = document.querySelector(".svc-stage");
         if (stage) stage.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
       }
@@ -246,6 +265,45 @@
   }, { rootMargin: "-45% 0px -45% 0px" });
   cases.forEach(function (item) { spy.observe(item); });
 
+  /* Listing / product page toggle inside each case study */
+  const caseTabs = document.querySelectorAll(".case__tabs");
+  function placeTabIndicator(tabs) {
+    const ind = tabs.querySelector(".case__tabs-ind");
+    const on = tabs.querySelector('[aria-selected="true"]');
+    if (!ind || !on) return;
+    ind.style.width = on.offsetWidth + "px";
+    ind.style.transform = "translateX(" + on.offsetLeft + "px)";
+  }
+  caseTabs.forEach(function (tabs) {
+    const buttons = Array.from(tabs.querySelectorAll("button"));
+    const split = tabs.nextElementSibling;
+    buttons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        const view = button.getAttribute("data-view");
+        buttons.forEach(function (b) { b.setAttribute("aria-selected", b === button ? "true" : "false"); });
+        split.querySelectorAll(".case__view").forEach(function (panel) {
+          const on = panel.getAttribute("data-view") === view;
+          panel.classList.toggle("is-on", on);
+          panel.toggleAttribute("inert", !on);
+          panel.setAttribute("aria-hidden", on ? "false" : "true");
+        });
+        placeTabIndicator(tabs);
+      });
+    });
+    tabs.addEventListener("keydown", function (event) {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+      event.preventDefault();
+      const at = buttons.findIndex(function (b) { return b.getAttribute("aria-selected") === "true"; });
+      const next = buttons[(at + (event.key === "ArrowRight" ? 1 : buttons.length - 1)) % buttons.length];
+      next.focus();
+      next.click();
+    });
+    placeTabIndicator(tabs);
+  });
+  function placeAllTabs() { caseTabs.forEach(placeTabIndicator); }
+  window.addEventListener("resize", placeAllTabs);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeAllTabs);
+
   const toast = document.getElementById("toast");
   let toastTimer = 0;
   function showToast(message) {
@@ -260,6 +318,15 @@
     const concept = event.target.closest("[data-concept]");
     if (!concept) return;
     event.preventDefault();
+    if (/add to bag/i.test(concept.textContent) && !concept.classList.contains("is-added")) {
+      const original = concept.innerHTML;
+      concept.classList.add("is-added");
+      concept.innerHTML = 'Added <span aria-hidden="true">✓</span>';
+      window.setTimeout(function () {
+        concept.classList.remove("is-added");
+        concept.innerHTML = original;
+      }, 1600);
+    }
     showToast("Concept layout — nothing here is for sale.");
   });
 
@@ -285,4 +352,151 @@
       showToast("Opening your email app.");
     });
   }
+
+  document.querySelectorAll(".rail__card").forEach(function (card) {
+    const button = card.querySelector("button");
+    if (!button) return;
+    button.addEventListener("click", function () {
+      document.querySelectorAll(".rail__card").forEach(function (other) {
+        const on = other === card;
+        other.classList.toggle("is-on", on);
+        const otherButton = other.querySelector("button");
+        if (otherButton) otherButton.setAttribute("aria-expanded", on ? "true" : "false");
+      });
+    });
+  });
+
+  const shade = document.getElementById("shade");
+  const shadeImg = document.getElementById("shade-img");
+  const shadeTitle = document.getElementById("shade-title");
+  const shadeDesc = document.getElementById("shade-desc");
+  const shadePrice = document.getElementById("shade-price");
+  const shadeLooks = [
+    {
+      src: "assets/volt-packshot.jpg",
+      alt: "Arc Headphones, matte black packshot",
+      title: "Arc Headphones",
+      desc: "Matte black. Built for long listening.",
+      price: "€189",
+      bg: "#12110f",
+      light: false
+    },
+    {
+      src: "assets/volt-campaign.jpg",
+      alt: "Arc Headphones photographed on a yellow field",
+      title: "Arc Headphones",
+      desc: "Signal yellow. The same object, louder.",
+      price: "€189",
+      bg: "#d8ff3e",
+      light: true
+    }
+  ];
+  document.querySelectorAll("[data-shade]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const look = shadeLooks[Number(button.getAttribute("data-shade"))];
+      if (!look || !shade) return;
+      document.querySelectorAll("[data-shade]").forEach(function (dot) {
+        dot.setAttribute("aria-selected", dot === button ? "true" : "false");
+      });
+      shade.style.background = look.bg;
+      shade.classList.toggle("is-light", look.light);
+      if (shadeImg) {
+        shadeImg.src = look.src;
+        shadeImg.alt = look.alt;
+      }
+      if (shadeTitle) shadeTitle.textContent = look.title;
+      if (shadeDesc) shadeDesc.textContent = look.desc;
+      if (shadePrice) shadePrice.textContent = look.price;
+    });
+  });
+
+  document.querySelectorAll(".spinline").forEach(function (line, n) {
+    const list = line.querySelector(".spinline__list");
+    const words = Array.from(list.children).map(function (w) { return w.textContent; });
+    const label = line.querySelector(".spinline__label");
+    const read = document.createElement("span");
+    read.className = "sr-only";
+    read.textContent = (label ? label.textContent + " " : "") + words.join(", ") + ".";
+    line.querySelector(".spinline__window").setAttribute("aria-hidden", "true");
+    if (label) label.setAttribute("aria-hidden", "true");
+    line.appendChild(read);
+    if (reduce || words.length < 2) return;
+
+    list.appendChild(list.firstElementChild.cloneNode(true));
+    let at = 0;
+    let timer = null;
+    let delay = null;
+    const step = function () {
+      if (at >= words.length) {
+        at = 0;
+        list.classList.add("is-reset");
+        list.style.transform = "translateY(0)";
+        void list.offsetHeight;
+        list.classList.remove("is-reset");
+      }
+      at += 1;
+      list.style.transform = "translateY(" + (-at * 1.15) + "em)";
+    };
+    const start = function () {
+      if (!timer) timer = setInterval(step, 2400);
+    };
+    const stop = function () {
+      clearTimeout(delay);
+      clearInterval(timer);
+      timer = null;
+    };
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) delay = setTimeout(start, (n % 3) * 400);
+        else stop();
+      }).observe(line);
+    } else {
+      start();
+    }
+  });
+
+  const tabbar = document.querySelector(".tabbar");
+  const tabBlob = document.querySelector(".tabbar__blob");
+  const tabItems = document.querySelectorAll(".tabbar__item");
+  function placeBlob(item) {
+    if (!tabbar || !tabBlob || !item) return;
+    const itemBox = item.getBoundingClientRect();
+    const barBox = tabbar.getBoundingClientRect();
+    const left = itemBox.left - barBox.left + (itemBox.width - tabBlob.offsetWidth) / 2;
+    tabBlob.style.transform = "translate3d(" + left + "px, 0, 0)";
+  }
+  function setTab(item) {
+    tabItems.forEach(function (link) {
+      link.classList.toggle("is-on", link === item);
+    });
+    placeBlob(item);
+  }
+  tabItems.forEach(function (item) {
+    item.addEventListener("click", function () { setTab(item); });
+  });
+  const tabMap = {};
+  tabItems.forEach(function (item) {
+    tabMap[item.getAttribute("href")] = item;
+  });
+  if ("IntersectionObserver" in window) {
+    const tabSpy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        const link = tabMap["#" + entry.target.id];
+        if (link) setTab(link);
+      });
+    }, { rootMargin: "-42% 0px -48% 0px" });
+    Object.keys(tabMap).forEach(function (hash) {
+      const section = document.querySelector(hash);
+      if (section) tabSpy.observe(section);
+    });
+  }
+  placeBlob(document.querySelector(".tabbar__item.is-on"));
+  window.addEventListener("resize", function () {
+    placeBlob(document.querySelector(".tabbar__item.is-on"));
+  });
+  window.addEventListener("load", function () {
+    placeBlob(document.querySelector(".tabbar__item.is-on"));
+  });
 })();
