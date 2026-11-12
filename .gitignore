@@ -3,3 +3,5 @@ Desktop.ini
 .DS_Store
 *.log
 assets/models/*.glb
+.claude-logs/
+.claude/
